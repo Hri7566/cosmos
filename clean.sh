@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-make clean && rm -f CosmOS.iso
+set -x
+make clean && rm -rf iso_root && rm -f CosmOS.iso
