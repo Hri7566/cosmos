@@ -16,7 +16,7 @@ endif
 
 # User controllable C compiler command.
 ifneq ($(TOOLCHAIN_PREFIX),)
-    CC := $(TOOLCHAIN_PREFIX)gcc
+    CC := $(TOOLCHAIN_PREFIX)clang
 else
     CC := cc
 endif
