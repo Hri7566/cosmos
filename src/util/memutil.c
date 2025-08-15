@@ -6,6 +6,8 @@
 // DO NOT remove or rename these functions, or stuff will eventually break!
 // They CAN be moved to a different .c file.
 
+// i added things
+
 void *memcpy(void *restrict dest, const void *restrict src, size_t n) {
     uint8_t *restrict pdest = (uint8_t *restrict)dest;
     const uint8_t *restrict psrc = (const uint8_t *restrict)src;
@@ -55,4 +57,22 @@ int memcmp(const void *s1, const void *s2, size_t n) {
     }
 
     return 0;
+}
+
+void *malloc(size_t n) {
+    Block *tail = memutil_find_block_tail();
+}
+
+void free(void *src) {
+
+}
+
+Block *memutil_find_block_tail(void) {
+    Block *current = &_memutil_block_head;
+
+    while (current->next != 0) {
+        current = current->next;
+    }
+
+    return current;
 }

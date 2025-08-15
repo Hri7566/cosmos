@@ -4,10 +4,9 @@
 
 #include "util/limine.h"
 #include "util/limine_attr.h"
-#include "flanterm/flanterm.h"
-#include "flanterm/flanterm_backends/fb.h"
 
 #include "screen/screen.h"
+#include "util/print.h"
 
 // Halt and catch fire function.
 static void hcf(void) {
@@ -33,24 +32,13 @@ void kmain(void) {
 
     // Fetch the first framebuffer.
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
+    //screen_init(framebuffer);
 
-    struct flanterm_context *ft_ctx = flanterm_fb_init(
-            NULL,
-            NULL,
-            framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch,
-            framebuffer->red_mask_size, framebuffer->red_mask_shift,
-            framebuffer->green_mask_size, framebuffer->green_mask_shift,
-            framebuffer->blue_mask_size, framebuffer->blue_mask_shift,
-            NULL,
-            NULL, NULL,
-            NULL, NULL,
-            NULL, NULL,
-            NULL, 0, 0, 1,
-            0, 0,
-            0
-        );
+    print_ft_ctx = get_context(framebuffer);
 
-    screen_draw(framebuffer, ft_ctx);
+    const char msg[] = "i am a penguin imposter\n";
+    print(msg);
+    //flanterm_write(print_ft_ctx, msg, sizeof(msg));
 
     // We're done, just hang...
     hcf();

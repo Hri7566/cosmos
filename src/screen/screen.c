@@ -1,6 +1,49 @@
 #include "screen.h"
+#include "../util/memutil.h"
 
-static size_t color = 0xffffff;
+typedef struct flanterm_context flanterm_context;
+
+void screen_init(struct limine_framebuffer *framebuffer) {
+    struct flanterm_context *ctx = flanterm_fb_init(
+            NULL,
+            NULL,
+            framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch,
+            framebuffer->red_mask_size, framebuffer->red_mask_shift,
+            framebuffer->green_mask_size, framebuffer->green_mask_shift,
+            framebuffer->blue_mask_size, framebuffer->blue_mask_shift,
+            NULL,
+            NULL, NULL,
+            NULL, NULL,
+            NULL, NULL,
+            NULL, 0, 0, 1,
+            0, 0,
+            0
+        );
+
+    // i think flanterm breaks here because the context is gone when we leave the function
+    ft_ctx = ctx;
+}
+
+struct flanterm_context *get_context(struct limine_framebuffer *framebuffer) {
+    return flanterm_fb_init(
+            NULL,
+            NULL,
+            framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch,
+            framebuffer->red_mask_size, framebuffer->red_mask_shift,
+            framebuffer->green_mask_size, framebuffer->green_mask_shift,
+            framebuffer->blue_mask_size, framebuffer->blue_mask_shift,
+            NULL,
+            NULL, NULL,
+            NULL, NULL,
+            NULL, NULL,
+            NULL, 0, 0, 1,
+            0, 0,
+            0
+        );
+}
+
+/*
+static size_t color = 0x8d3f50;
 
 void screen_draw_bg(struct limine_framebuffer *framebuffer, struct flanterm_context *ft_ctx) {
     for (size_t y = 0; y < framebuffer->height; y++) {
@@ -10,8 +53,6 @@ void screen_draw_bg(struct limine_framebuffer *framebuffer, struct flanterm_cont
             fb_ptr[y * width + x] = color;
          }
     }
-
-    color = !color;
 }
 
 void screen_draw(struct limine_framebuffer *framebuffer, struct flanterm_context *ft_ctx) {
@@ -19,12 +60,6 @@ void screen_draw(struct limine_framebuffer *framebuffer, struct flanterm_context
 
     const char msg[] = "beans\n";
     flanterm_write(ft_ctx, msg, sizeof(msg));
-
-    // Note: we assume the framebuffer model is RGB with 32-bit pixels.
-    /*
-    for (size_t i = 0; i < 768; i++) {
-        volatile uint32_t *fb_ptr = framebuffer->address;
-        fb_ptr[i * (framebuffer->pitch / 4) + i] = 0x8d3f50;
-    }
-    */
+    flanterm_flush(ft_ctx);
 }
+*/
